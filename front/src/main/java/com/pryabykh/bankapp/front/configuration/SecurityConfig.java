@@ -21,7 +21,6 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .defaultSuccessUrl("/")
-                        .permitAll()
                 )
                 .logout(Customizer.withDefaults());
 

@@ -17,6 +17,7 @@
 
 	<modules>
 		<module>front</module>
+		<module>accounts</module>
 	</modules>
 
 	<url/>
