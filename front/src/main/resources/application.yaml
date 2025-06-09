@@ -1,0 +1,5 @@
+spring:
+  application:
+    name=front
+feign:
+  accounts: http://localhost:8081

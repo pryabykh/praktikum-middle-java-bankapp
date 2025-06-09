@@ -1,12 +1,13 @@
 package com.pryabykh.bankapp.accounts.controller;
 
+import com.pryabykh.bankapp.accounts.dto.CreateUserDto;
+import com.pryabykh.bankapp.accounts.dto.ResponseDto;
 import com.pryabykh.bankapp.accounts.service.UserService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,12 +21,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String createUser(@RequestParam String login,
-                             @RequestParam String password,
-                             @RequestParam String name,
-                             @RequestParam String birthdate) {
-        userService.createUser(login, password, name, birthdate);
-        return "User created successfully";
+    public ResponseDto createUser(@RequestBody CreateUserDto createUserDto) {
+        return userService.createUser(createUserDto);
     }
 
     @PutMapping("/{userId}")

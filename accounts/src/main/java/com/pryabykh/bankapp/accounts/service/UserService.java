@@ -1,5 +1,7 @@
 package com.pryabykh.bankapp.accounts.service;
 
+import com.pryabykh.bankapp.accounts.dto.CreateUserDto;
+import com.pryabykh.bankapp.accounts.dto.ResponseDto;
 import com.pryabykh.bankapp.accounts.entity.User;
 import com.pryabykh.bankapp.accounts.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,21 +23,33 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(String login, String password, String name, String birthdate) {
-        LocalDate parsedBirthdate = LocalDate.parse(birthdate);
-        int age = Period.between(parsedBirthdate, LocalDate.now()).getYears();
+    public ResponseDto createUser(CreateUserDto createUserDto) {
+        ResponseDto response = new ResponseDto();
+        int age = Period.between(createUserDto.getBirthdate(), LocalDate.now()).getYears();
 
         if (age < 18) {
-            throw new IllegalArgumentException("User must be at least 18 years old.");
+            response.setHasErrors(true);
+            response.getErrors().add("Вам должно быть больше 18 лет");
+        }
+
+        if (!createUserDto.getPassword().equals(createUserDto.getConfirmPassword())) {
+            response.setHasErrors(true);
+            response.getErrors().add("Пароли не совпадают");
+        }
+
+        if (response.isHasErrors()) {
+            return response;
         }
 
         User user = new User();
-        user.setLogin(login);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setName(name);
-        user.setBirthdate(parsedBirthdate);
+        user.setLogin(createUserDto.getLogin());
+        user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
+        user.setName(createUserDto.getName());
+        user.setBirthdate(createUserDto.getBirthdate());
 
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        return response;
     }
 
     @Transactional

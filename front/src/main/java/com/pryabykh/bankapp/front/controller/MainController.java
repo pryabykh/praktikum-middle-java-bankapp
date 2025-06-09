@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
-public class BankAppController {
+public class MainController {
 
     @GetMapping()
     public String main() {
