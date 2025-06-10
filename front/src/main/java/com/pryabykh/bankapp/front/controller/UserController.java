@@ -2,6 +2,7 @@ package com.pryabykh.bankapp.front.controller;
 
 import com.pryabykh.bankapp.front.dto.CreateUserDto;
 import com.pryabykh.bankapp.front.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String createUser(@ModelAttribute CreateUserDto user, Model model) {
-        return userService.createUser(user, model);
+    public String createUser(@ModelAttribute CreateUserDto user, Model model, HttpServletRequest request) {
+        return userService.createUser(user, model, request);
     }
 }

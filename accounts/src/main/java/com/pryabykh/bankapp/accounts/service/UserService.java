@@ -2,6 +2,7 @@ package com.pryabykh.bankapp.accounts.service;
 
 import com.pryabykh.bankapp.accounts.dto.CreateUserDto;
 import com.pryabykh.bankapp.accounts.dto.ResponseDto;
+import com.pryabykh.bankapp.accounts.dto.UserDto;
 import com.pryabykh.bankapp.accounts.entity.User;
 import com.pryabykh.bankapp.accounts.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,10 @@ public class UserService {
         ResponseDto response = new ResponseDto();
         int age = Period.between(createUserDto.getBirthdate(), LocalDate.now()).getYears();
 
+        if (userRepository.findByLogin(createUserDto.getLogin()).isPresent()) {
+            response.setHasErrors(true);
+            response.getErrors().add("Такой логин уже занят. Надо бы выбрать другой");
+        }
         if (age < 18) {
             response.setHasErrors(true);
             response.getErrors().add("Вам должно быть больше 18 лет");
@@ -50,6 +55,20 @@ public class UserService {
         userRepository.save(user);
 
         return response;
+    }
+
+    @Transactional(readOnly = true)
+    public UserDto fetchUserByLogin(String login) {
+        return userRepository.findByLogin(login)
+                .map(user -> new UserDto(user.getLogin(), user.getPassword(), user.getName(), user.getBirthdate()))
+                .orElseThrow(() -> new IllegalArgumentException());
+    }
+
+    @Transactional(readOnly = true)
+    public boolean authUser(String login, String password) {
+        return userRepository.findByLogin(login)
+                .map(user -> user.getPassword().equals(passwordEncoder.encode(password)))
+                .orElse(false);
     }
 
     @Transactional
