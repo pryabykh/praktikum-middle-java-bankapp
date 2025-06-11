@@ -2,6 +2,7 @@ package com.pryabykh.bankapp.accounts.service;
 
 import com.pryabykh.bankapp.accounts.dto.CreateUserDto;
 import com.pryabykh.bankapp.accounts.dto.ResponseDto;
+import com.pryabykh.bankapp.accounts.dto.UpdatePasswordDto;
 import com.pryabykh.bankapp.accounts.dto.UserDto;
 import com.pryabykh.bankapp.accounts.entity.User;
 import com.pryabykh.bankapp.accounts.repository.UserRepository;
@@ -37,9 +38,15 @@ public class UserService {
             response.getErrors().add("Вам должно быть больше 18 лет");
         }
 
-        if (!createUserDto.getPassword().equals(createUserDto.getConfirmPassword())) {
+        if (createUserDto.getPassword() == null || createUserDto.getPassword().isBlank() ||
+                createUserDto.getConfirmPassword() == null || createUserDto.getConfirmPassword().isBlank()) {
             response.setHasErrors(true);
-            response.getErrors().add("Пароли не совпадают");
+            response.getErrors().add("Пароль не может быть пустым");
+        } else {
+            if (!createUserDto.getPassword().equals(createUserDto.getConfirmPassword())) {
+                response.setHasErrors(true);
+                response.getErrors().add("Пароли не совпадают");
+            }
         }
 
         if (response.isHasErrors()) {
@@ -64,21 +71,30 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException());
     }
 
-    @Transactional(readOnly = true)
-    public boolean authUser(String login, String password) {
-        return userRepository.findByLogin(login)
-                .map(user -> user.getPassword().equals(passwordEncoder.encode(password)))
-                .orElse(false);
-    }
-
     @Transactional
-    public boolean updatePassword(Long userId, String newPassword) {
-        return userRepository.findById(userId)
+    public ResponseDto updatePassword(String login, UpdatePasswordDto updatePasswordDto) {
+        ResponseDto response = new ResponseDto();
+        if (updatePasswordDto.getPassword() == null || updatePasswordDto.getPassword().isBlank() ||
+                updatePasswordDto.getConfirmPassword() == null || updatePasswordDto.getConfirmPassword().isBlank()) {
+            response.setHasErrors(true);
+            response.getErrors().add("Пароль не может быть пустым");
+        } else {
+            if (!updatePasswordDto.getPassword().equals(updatePasswordDto.getConfirmPassword())) {
+                response.setHasErrors(true);
+                response.getErrors().add("Пароли не совпадают");
+            }
+        }
+
+        if (response.isHasErrors()) {
+            return response;
+        }
+
+        return userRepository.findByLogin(login)
                 .map(user -> {
-                    user.setPassword(passwordEncoder.encode(newPassword));
+                    user.setPassword(passwordEncoder.encode(updatePasswordDto.getPassword()));
                     userRepository.save(user);
-                    return true;
+                    return response;
                 })
-                .orElse(false);
+                .orElseThrow(() -> new IllegalArgumentException());
     }
 }

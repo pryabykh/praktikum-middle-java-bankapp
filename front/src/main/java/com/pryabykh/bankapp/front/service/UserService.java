@@ -3,6 +3,7 @@ package com.pryabykh.bankapp.front.service;
 import com.pryabykh.bankapp.front.dto.CreateUserDto;
 import com.pryabykh.bankapp.front.feign.accounts.AccountsFeignClient;
 import com.pryabykh.bankapp.front.feign.accounts.ResponseDto;
+import com.pryabykh.bankapp.front.feign.accounts.UpdatePasswordDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,6 +40,17 @@ public class UserService {
             authenticateUser(createUserDto, request);
             return "redirect:/";
         }
+    }
+
+    public String updatePassword(String login,
+                                 UpdatePasswordDto updatePasswordDto,
+                                 Model model) {
+        ResponseDto response = accountsFeignClient.updatePassword(login, updatePasswordDto);
+        if (response.isHasErrors()) {
+            model.addAttribute("passwordErrors", response.getErrors());
+            model.addAttribute("login", login);
+        }
+        return "main";
     }
 
     public boolean updatePassword(Long userId, String newPassword) {
