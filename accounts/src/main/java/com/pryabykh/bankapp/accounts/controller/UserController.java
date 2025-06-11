@@ -1,5 +1,6 @@
 package com.pryabykh.bankapp.accounts.controller;
 
+import com.pryabykh.bankapp.accounts.dto.AccountSettingsDto;
 import com.pryabykh.bankapp.accounts.dto.CreateUserDto;
 import com.pryabykh.bankapp.accounts.dto.ResponseDto;
 import com.pryabykh.bankapp.accounts.dto.UpdatePasswordDto;
@@ -33,9 +34,15 @@ public class UserController {
         return userService.fetchUserByLogin(login);
     }
 
-    @PutMapping("/{login}")
+    @PutMapping("/{login}/updatePassword")
     public ResponseDto updatePassword(@PathVariable String login,
                                       @RequestBody UpdatePasswordDto updatePasswordDto) {
         return userService.updatePassword(login, updatePasswordDto);
+    }
+
+    @PutMapping("/{login}/editUserAccounts")
+    public ResponseDto editUserAccounts(@PathVariable String login,
+                                        @RequestBody AccountSettingsDto accountSettingsDto) {
+        return userService.editUserAccounts(login, accountSettingsDto);
     }
 }

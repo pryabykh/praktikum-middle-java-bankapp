@@ -1,6 +1,7 @@
 package com.pryabykh.bankapp.front.controller;
 
 import com.pryabykh.bankapp.front.dto.CreateUserDto;
+import com.pryabykh.bankapp.front.feign.accounts.AccountSettingsDto;
 import com.pryabykh.bankapp.front.feign.accounts.UpdatePasswordDto;
 import com.pryabykh.bankapp.front.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,5 +39,12 @@ public class UserController {
                                  @ModelAttribute UpdatePasswordDto updatePasswordDto,
                                  Model model) {
         return userService.updatePassword(login, updatePasswordDto, model);
+    }
+
+    @PostMapping("/user/{login}/editUserAccounts")
+    public String editUserAccounts(@PathVariable("login") String login,
+                                   @ModelAttribute AccountSettingsDto accountSettingsDto,
+                                   Model model) {
+        return userService.editUserAccounts(login, accountSettingsDto, model);
     }
 }

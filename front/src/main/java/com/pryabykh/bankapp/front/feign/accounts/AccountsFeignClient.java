@@ -21,7 +21,11 @@ public interface AccountsFeignClient {
     @GetMapping("/api/users/{login}")
     UserDto fetchUserByLogin(@PathVariable("login") String login);
 
-    @PutMapping("/api/users/{login}")
+    @PutMapping("/api/users/{login}/updatePassword")
     ResponseDto updatePassword(@PathVariable String login,
                                @RequestBody UpdatePasswordDto updatePasswordDto);
+
+    @PutMapping("/api/users/{login}/editUserAccounts")
+    ResponseDto editUserAccounts(@PathVariable String login,
+                                 @RequestBody AccountSettingsDto accountSettingsDto);
 }

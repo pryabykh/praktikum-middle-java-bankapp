@@ -1,5 +1,6 @@
 package com.pryabykh.bankapp.accounts.service;
 
+import com.pryabykh.bankapp.accounts.dto.AccountSettingsDto;
 import com.pryabykh.bankapp.accounts.dto.CreateUserDto;
 import com.pryabykh.bankapp.accounts.dto.ResponseDto;
 import com.pryabykh.bankapp.accounts.dto.UpdatePasswordDto;
@@ -27,12 +28,12 @@ public class UserService {
     @Transactional
     public ResponseDto createUser(CreateUserDto createUserDto) {
         ResponseDto response = new ResponseDto();
-        int age = Period.between(createUserDto.getBirthdate(), LocalDate.now()).getYears();
 
         if (userRepository.findByLogin(createUserDto.getLogin()).isPresent()) {
             response.setHasErrors(true);
             response.getErrors().add("Такой логин уже занят. Надо бы выбрать другой");
         }
+        int age = Period.between(createUserDto.getBirthdate(), LocalDate.now()).getYears();
         if (age < 18) {
             response.setHasErrors(true);
             response.getErrors().add("Вам должно быть больше 18 лет");
@@ -92,6 +93,30 @@ public class UserService {
         return userRepository.findByLogin(login)
                 .map(user -> {
                     user.setPassword(passwordEncoder.encode(updatePasswordDto.getPassword()));
+                    userRepository.save(user);
+                    return response;
+                })
+                .orElseThrow(() -> new IllegalArgumentException());
+    }
+
+    @Transactional
+    public ResponseDto editUserAccounts(String login, AccountSettingsDto accountSettingsDto) {
+        ResponseDto response = new ResponseDto();
+
+        int age = Period.between(accountSettingsDto.getBirthdate(), LocalDate.now()).getYears();
+        if (age < 18) {
+            response.setHasErrors(true);
+            response.getErrors().add("Вам должно быть больше 18 лет");
+        }
+
+        if (response.isHasErrors()) {
+            return response;
+        }
+
+        return userRepository.findByLogin(login)
+                .map(user -> {
+                    user.setName(accountSettingsDto.getName());
+                    user.setBirthdate(accountSettingsDto.getBirthdate());
                     userRepository.save(user);
                     return response;
                 })
