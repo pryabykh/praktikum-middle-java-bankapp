@@ -35,7 +35,7 @@ public class User {
     private LocalDate birthdate;
 
     @BatchSize(size = 100)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Account> accounts;
 
     public Long getId() {
