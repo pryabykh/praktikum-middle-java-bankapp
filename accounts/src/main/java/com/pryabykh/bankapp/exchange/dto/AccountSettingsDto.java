@@ -1,4 +1,4 @@
-package com.pryabykh.bankapp.front.feign.accounts;
+package com.pryabykh.bankapp.exchange.dto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

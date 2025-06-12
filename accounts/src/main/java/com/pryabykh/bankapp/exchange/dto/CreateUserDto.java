@@ -1,27 +1,25 @@
-package com.pryabykh.bankapp.front.feign.accounts;
+package com.pryabykh.bankapp.exchange.dto;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-public class UserDto {
+public class CreateUserDto {
 
     private String login;
 
     private String password;
 
+    private String confirmPassword;
+
     private String name;
 
     private LocalDate birthdate;
 
-    private List<AccountDto> accounts = new ArrayList<>();
-
-    public UserDto(String login, String password, String name, LocalDate birthdate, List<AccountDto> accounts) {
+    public CreateUserDto(String login, String password, String confirmPassword, String name, LocalDate birthdate) {
         this.login = login;
         this.password = password;
+        this.confirmPassword = confirmPassword;
         this.name = name;
         this.birthdate = birthdate;
-        this.accounts = accounts;
     }
 
     public String getLogin() {
@@ -40,6 +38,14 @@ public class UserDto {
         this.password = password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public String getName() {
         return name;
     }
@@ -54,13 +60,5 @@ public class UserDto {
 
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
-    }
-
-    public List<AccountDto> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(List<AccountDto> accounts) {
-        this.accounts = accounts;
     }
 }

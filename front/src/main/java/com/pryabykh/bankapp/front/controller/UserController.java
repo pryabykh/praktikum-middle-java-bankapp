@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/")
@@ -30,21 +31,21 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String createUser(@ModelAttribute CreateUserDto user, Model model, HttpServletRequest request) {
+    public String createUser(@ModelAttribute CreateUserDto user, RedirectAttributes model, HttpServletRequest request) {
         return userService.createUser(user, model, request);
     }
 
     @PostMapping("/user/{login}/editPassword")
     public String updatePassword(@PathVariable("login") String login,
                                  @ModelAttribute UpdatePasswordDto updatePasswordDto,
-                                 Model model) {
+                                 RedirectAttributes model) {
         return userService.updatePassword(login, updatePasswordDto, model);
     }
 
     @PostMapping("/user/{login}/editUserAccounts")
     public String editUserAccounts(@PathVariable("login") String login,
                                    @ModelAttribute AccountSettingsDto accountSettingsDto,
-                                   Model model) {
+                                   RedirectAttributes model) {
         return userService.editUserAccounts(login, accountSettingsDto, model);
     }
 }

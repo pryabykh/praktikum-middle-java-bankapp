@@ -5,7 +5,6 @@ import com.pryabykh.bankapp.front.feign.accounts.AccountSettingsDto;
 import com.pryabykh.bankapp.front.feign.accounts.AccountsFeignClient;
 import com.pryabykh.bankapp.front.feign.accounts.ResponseDto;
 import com.pryabykh.bankapp.front.feign.accounts.UpdatePasswordDto;
-import com.pryabykh.bankapp.front.feign.accounts.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
@@ -29,18 +29,15 @@ public class UserService {
         this.userDetailsService = userDetailsService;
     }
 
-    public String createUser(CreateUserDto createUserDto, Model model, HttpServletRequest request) {
+    public String createUser(CreateUserDto createUserDto, RedirectAttributes model, HttpServletRequest request) {
         ResponseDto response = accountsFeignClient.createUser(createUserDto);
         if (response.isHasErrors()) {
-            model.addAttribute("errors", response.getErrors());
-            model.addAttribute("login", createUserDto.getLogin());
-            model.addAttribute("name", createUserDto.getName());
-            model.addAttribute("birthdate", createUserDto.getBirthdate());
+            model.addFlashAttribute("errors", response.getErrors());
+            model.addFlashAttribute("login", createUserDto.getLogin());
+            model.addFlashAttribute("name", createUserDto.getName());
+            model.addFlashAttribute("birthdate", createUserDto.getBirthdate());
             return "signup";
         } else {
-            model.addAttribute("login", createUserDto.getLogin());
-            model.addAttribute("name", createUserDto.getName());
-            model.addAttribute("birthdate", createUserDto.getBirthdate());
             authenticateUser(createUserDto, request);
             return "redirect:/";
         }
@@ -48,30 +45,22 @@ public class UserService {
 
     public String updatePassword(String login,
                                  UpdatePasswordDto updatePasswordDto,
-                                 Model model) {
+                                 RedirectAttributes model) {
         ResponseDto response = accountsFeignClient.updatePassword(login, updatePasswordDto);
         if (response.isHasErrors()) {
-            model.addAttribute("passwordErrors", response.getErrors());
+            model.addFlashAttribute("passwordErrors", response.getErrors());
         }
-        UserDto user = accountsFeignClient.fetchUserByLogin(login);
-        model.addAttribute("login", login);
-        model.addAttribute("name", user.getName());
-        model.addAttribute("birthdate", user.getBirthdate());
-        return "main";
+        return "redirect:/";
     }
 
     public String editUserAccounts(String login,
                                    AccountSettingsDto accountSettingsDto,
-                                 Model model) {
+                                   RedirectAttributes model) {
         ResponseDto response = accountsFeignClient.editUserAccounts(login, accountSettingsDto);
         if (response.isHasErrors()) {
-            model.addAttribute("userAccountsErrors", response.getErrors());
+            model.addFlashAttribute("userAccountsErrors", response.getErrors());
         }
-        UserDto user = accountsFeignClient.fetchUserByLogin(login);
-        model.addAttribute("login", login);
-        model.addAttribute("name", user.getName());
-        model.addAttribute("birthdate", user.getBirthdate());
-        return "main";
+        return "redirect:/";
     }
 
     private void authenticateUser(CreateUserDto createUserDto, HttpServletRequest request) {

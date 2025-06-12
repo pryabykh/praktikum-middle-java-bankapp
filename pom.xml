@@ -18,6 +18,7 @@
 	<modules>
 		<module>front</module>
 		<module>accounts</module>
+		<module>exchange</module>
 	</modules>
 
 	<url/>

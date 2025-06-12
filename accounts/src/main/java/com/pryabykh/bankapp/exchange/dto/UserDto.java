@@ -1,4 +1,4 @@
-package com.pryabykh.bankapp.front.feign.accounts;
+package com.pryabykh.bankapp.exchange.dto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,12 +16,11 @@ public class UserDto {
 
     private List<AccountDto> accounts = new ArrayList<>();
 
-    public UserDto(String login, String password, String name, LocalDate birthdate, List<AccountDto> accounts) {
+    public UserDto(String login, String password, String name, LocalDate birthdate) {
         this.login = login;
         this.password = password;
         this.name = name;
         this.birthdate = birthdate;
-        this.accounts = accounts;
     }
 
     public String getLogin() {

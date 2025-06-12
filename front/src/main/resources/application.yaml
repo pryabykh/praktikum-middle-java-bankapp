@@ -3,3 +3,4 @@ spring:
     name=front
 feign:
   accounts: http://localhost:8081
+  exchange: http://localhost:8082
