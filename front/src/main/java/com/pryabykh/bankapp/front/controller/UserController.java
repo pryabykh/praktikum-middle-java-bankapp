@@ -6,11 +6,10 @@ import com.pryabykh.bankapp.front.feign.accounts.UpdatePasswordDto;
 import com.pryabykh.bankapp.front.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -35,17 +34,17 @@ public class UserController {
         return userService.createUser(user, model, request);
     }
 
-    @PostMapping("/user/{login}/editPassword")
-    public String updatePassword(@PathVariable("login") String login,
-                                 @ModelAttribute UpdatePasswordDto updatePasswordDto,
-                                 RedirectAttributes model) {
-        return userService.updatePassword(login, updatePasswordDto, model);
+    @PostMapping("/user/editPassword")
+    public String updatePassword(@ModelAttribute UpdatePasswordDto updatePasswordDto,
+                                 RedirectAttributes model,
+                                 Authentication authentication) {
+        return userService.updatePassword(authentication.getName(), updatePasswordDto, model);
     }
 
-    @PostMapping("/user/{login}/editUserAccounts")
-    public String editUserAccounts(@PathVariable("login") String login,
-                                   @ModelAttribute AccountSettingsDto accountSettingsDto,
-                                   RedirectAttributes model) {
-        return userService.editUserAccounts(login, accountSettingsDto, model);
+    @PostMapping("/user/editUserAccounts")
+    public String editUserAccounts(@ModelAttribute AccountSettingsDto accountSettingsDto,
+                                   RedirectAttributes model,
+                                   Authentication authentication) {
+        return userService.editUserAccounts(authentication.getName(), accountSettingsDto, model);
     }
 }
