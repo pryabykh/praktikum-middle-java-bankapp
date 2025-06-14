@@ -13,6 +13,7 @@ import com.pryabykh.bankapp.transfer.entity.Account;
 import com.pryabykh.bankapp.transfer.entity.User;
 import com.pryabykh.bankapp.transfer.feign.exchange.ExchangeFeignClient;
 import com.pryabykh.bankapp.transfer.feign.exchange.RateDto;
+import com.pryabykh.bankapp.transfer.repository.NotificationsOutboxRepository;
 import com.pryabykh.bankapp.transfer.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,11 +30,13 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final NotificationsOutboxService notificationsOutboxService;
     private final ExchangeFeignClient exchangeFeignClient;
 
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, ExchangeFeignClient exchangeFeignClient) {
+    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, NotificationsOutboxService notificationsOutboxService, ExchangeFeignClient exchangeFeignClient) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.notificationsOutboxService = notificationsOutboxService;
         this.exchangeFeignClient = exchangeFeignClient;
     }
 
@@ -140,6 +143,7 @@ public class UserService {
                 .map(user -> {
                     user.setPassword(passwordEncoder.encode(updatePasswordDto.getPassword()));
                     userRepository.save(user);
+                    notificationsOutboxService.createNotification(login, "Пароль успешно обновлен");
                     return response;
                 })
                 .orElseThrow(() -> new IllegalArgumentException());
@@ -199,6 +203,7 @@ public class UserService {
         user.setName(accountSettingsDto.getName());
         user.setBirthdate(accountSettingsDto.getBirthdate());
         userRepository.save(user);
+        notificationsOutboxService.createNotification(login, "Данные аккаунта отредактированы");
         return response;
     }
 
@@ -247,9 +252,11 @@ public class UserService {
         }
 
         if ("GET".equals(cashDto.getAction())) {
+            notificationsOutboxService.createNotification(login, "Снятие наличных: " + cashDto.getValue() + " " + cashDto.getCurrency());
             accountToModify.setBalance(accountToModify.getBalance() - cashDto.getValue() * 100);
         }
         if ("PUT".equals(cashDto.getAction())) {
+            notificationsOutboxService.createNotification(login, "Зачисление наличных: " + cashDto.getValue() + " " + cashDto.getCurrency());
             accountToModify.setBalance(accountToModify.getBalance() + cashDto.getValue() * 100);
         }
         userRepository.save(user);
@@ -320,7 +327,10 @@ public class UserService {
         accountTo.setBalance(accountTo.getBalance() + transferDto.getConvertedValue());
         userRepository.save(user);
         if (!login.equals(transferDto.getToLogin())) {
+            notificationsOutboxService.createNotification(login, "Перевод " + transferDto.getValue() + " " + transferDto.getFromCurrency() + " -> " + transferDto.getToCurrency() + " (пользователю " + transferDto.getToLogin() + ")");
             userRepository.save(toUser);
+        } else {
+            notificationsOutboxService.createNotification(login, "Перевод " + transferDto.getValue() + " " + transferDto.getFromCurrency() + " -> " + transferDto.getToCurrency() + " (на свой счет)");
         }
         return response;
     }
