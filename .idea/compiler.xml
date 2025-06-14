@@ -11,6 +11,7 @@
         </processorPath>
         <module name="exchange" />
         <module name="accounts" />
+        <module name="transfer" />
         <module name="cash" />
       </profile>
       <profile name="Annotation profile for front" enabled="true">
@@ -35,6 +36,7 @@
       <module name="exchange" options="-parameters" />
       <module name="exchange (1)" options="-parameters" />
       <module name="front" options="-parameters" />
+      <module name="transfer" options="-parameters" />
     </option>
   </component>
 </project>

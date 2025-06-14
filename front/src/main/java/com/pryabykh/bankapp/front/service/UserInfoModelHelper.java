@@ -29,5 +29,6 @@ public class UserInfoModelHelper {
         model.addAttribute("birthdate", user.getBirthdate());
         model.addAttribute("accounts", user.getAccounts());
         model.addAttribute("currency", rates);
+        model.addAttribute("users", accountsFeignClient.fetchAllUsers(login));
     }
 }

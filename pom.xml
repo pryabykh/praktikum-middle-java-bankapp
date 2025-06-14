@@ -20,6 +20,7 @@
 		<module>accounts</module>
 		<module>exchange</module>
 		<module>cash</module>
+		<module>transfer</module>
 	</modules>
 
 	<url/>

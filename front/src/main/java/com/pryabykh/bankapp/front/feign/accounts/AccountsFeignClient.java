@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @FeignClient(value = "accounts", url = "${feign.accounts}")
 public interface AccountsFeignClient {
 
@@ -28,4 +30,7 @@ public interface AccountsFeignClient {
     @PutMapping("/api/users/{login}/editUserAccounts")
     ResponseDto editUserAccounts(@PathVariable String login,
                                  @RequestBody AccountSettingsDto accountSettingsDto);
+
+    @GetMapping("/api/users/allUsers/{login}")
+    List<AllUsersDto> fetchAllUsers(@PathVariable("login") String login);
 }
