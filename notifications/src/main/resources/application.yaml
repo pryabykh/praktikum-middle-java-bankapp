@@ -1,7 +1,7 @@
 server:
-  port: 8081
+  port: 8087
 db:
-  schema-name: accounts
+  schema-name: notifications
 spring:
   jackson:
     time-zone: UTC
@@ -30,8 +30,4 @@ spring:
     default-schema: ${db.schema-name}
     change-log: classpath:db/changelog/db.changelog-master.xml
   application:
-    name: accounts
-
-feign:
-  exchange: http://localhost:8082
-  notifications: http://localhost:8087
+    name: notifications

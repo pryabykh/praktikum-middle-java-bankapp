@@ -8,3 +8,4 @@ feign:
   exchange: http://localhost:8082
   cash: http://localhost:8084
   transfer: http://localhost:8085
+  notifications: http://localhost:8087

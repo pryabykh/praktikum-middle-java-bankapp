@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.pryabykh.bankapp</groupId>
-	<artifactId>accounts</artifactId>
+	<artifactId>notifications</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>accounts</name>
-	<description>accounts</description>
+	<name>notifications</name>
+	<description>notifications</description>
 	<url/>
 	<licenses>
 		<license/>

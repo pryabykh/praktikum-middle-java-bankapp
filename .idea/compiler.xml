@@ -11,10 +11,10 @@
         </processorPath>
         <module name="blocker" />
         <module name="exchange" />
-        <module name="accounts" />
         <module name="transfer" />
         <module name="cash" />
         <module name="exchange-generator" />
+        <module name="notifications" />
       </profile>
       <profile name="Annotation profile for front" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -25,6 +25,16 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="front" />
+      </profile>
+      <profile name="Annotation profile for accounts" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+        </processorPath>
+        <module name="accounts" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -42,6 +52,7 @@
       <module name="exchange (1)" options="-parameters" />
       <module name="exchange-generator" options="-parameters" />
       <module name="front" options="-parameters" />
+      <module name="notifications" options="-parameters" />
       <module name="transfer" options="-parameters" />
     </option>
   </component>

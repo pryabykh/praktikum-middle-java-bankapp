@@ -327,6 +327,7 @@ public class UserService {
         userRepository.save(user);
         if (!login.equals(transferDto.getToLogin())) {
             notificationsOutboxService.createNotification(login, "Перевод " + transferDto.getValue() + " " + transferDto.getFromCurrency() + " -> " + transferDto.getToCurrency() + " (пользователю " + transferDto.getToLogin() + ")");
+            notificationsOutboxService.createNotification(transferDto.getToLogin(), "Зачисление " + transferDto.getValue() + " " + transferDto.getFromCurrency() + " -> " + transferDto.getToCurrency() + " (от пользователя " + login + ")");
             userRepository.save(toUser);
         } else {
             notificationsOutboxService.createNotification(login, "Перевод " + transferDto.getValue() + " " + transferDto.getFromCurrency() + " -> " + transferDto.getToCurrency() + " (на свой счет)");

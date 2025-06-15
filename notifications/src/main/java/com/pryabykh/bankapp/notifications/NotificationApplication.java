@@ -1,17 +1,15 @@
-package com.pryabykh.bankapp.accounts;
+package com.pryabykh.bankapp.notifications;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
-@EnableScheduling
 @EnableFeignClients
 @SpringBootApplication
-public class AccountsApplication {
+public class NotificationApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AccountsApplication.class, args);
+		SpringApplication.run(NotificationApplication.class, args);
 	}
 
 }

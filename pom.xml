@@ -23,6 +23,7 @@
 		<module>transfer</module>
 		<module>blocker</module>
 		<module>exchange-generator</module>
+		<module>notifications</module>
 	</modules>
 
 	<url/>
