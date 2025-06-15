@@ -1,7 +1,5 @@
 server:
-  port: 8084
+  port: 8083
 spring:
   application:
-    name: cash
-feign:
-  accounts: http://localhost:8081
+    name: blocker
