@@ -5,3 +5,4 @@ spring:
     name: cash
 feign:
   accounts: http://localhost:8081
+  blocker: http://localhost:8083

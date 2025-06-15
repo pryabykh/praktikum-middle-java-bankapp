@@ -22,6 +22,7 @@
 		<module>cash</module>
 		<module>transfer</module>
 		<module>blocker</module>
+		<module>exchange-generator</module>
 	</modules>
 
 	<url/>

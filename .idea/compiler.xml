@@ -9,10 +9,12 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
+        <module name="blocker" />
         <module name="exchange" />
         <module name="accounts" />
         <module name="transfer" />
         <module name="cash" />
+        <module name="exchange-generator" />
       </profile>
       <profile name="Annotation profile for front" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -26,15 +28,19 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="exchage-generator" target="21" />
       <module name="exchange (1)" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="accounts" options="-parameters" />
+      <module name="blocker" options="-parameters" />
       <module name="cash" options="-parameters" />
+      <module name="exchage-generator" options="-parameters" />
       <module name="exchange" options="-parameters" />
       <module name="exchange (1)" options="-parameters" />
+      <module name="exchange-generator" options="-parameters" />
       <module name="front" options="-parameters" />
       <module name="transfer" options="-parameters" />
     </option>

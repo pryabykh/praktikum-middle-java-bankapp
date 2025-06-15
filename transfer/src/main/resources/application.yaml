@@ -6,3 +6,4 @@ spring:
 feign:
   accounts: http://localhost:8081
   exchange: http://localhost:8082
+  blocker: http://localhost:8083
