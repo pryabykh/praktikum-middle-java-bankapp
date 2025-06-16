@@ -2,6 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="configserver" />
+      </profile>
       <profile name="Annotation profile for bankapp-multimodule" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -10,31 +16,13 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="blocker" />
-        <module name="exchange" />
         <module name="transfer" />
+        <module name="exchange" />
+        <module name="front" />
+        <module name="accounts" />
         <module name="cash" />
         <module name="exchange-generator" />
         <module name="notifications" />
-      </profile>
-      <profile name="Annotation profile for front" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-        </processorPath>
-        <module name="front" />
-      </profile>
-      <profile name="Annotation profile for accounts" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-        </processorPath>
-        <module name="accounts" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -47,6 +35,7 @@
       <module name="accounts" options="-parameters" />
       <module name="blocker" options="-parameters" />
       <module name="cash" options="-parameters" />
+      <module name="configserver" options="-parameters" />
       <module name="exchage-generator" options="-parameters" />
       <module name="exchange" options="-parameters" />
       <module name="exchange (1)" options="-parameters" />

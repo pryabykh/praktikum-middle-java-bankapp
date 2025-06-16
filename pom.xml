@@ -24,6 +24,7 @@
 		<module>blocker</module>
 		<module>exchange-generator</module>
 		<module>notifications</module>
+		<module>configserver</module>
 	</modules>
 
 	<url/>
