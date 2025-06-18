@@ -25,6 +25,7 @@
 		<module>exchange-generator</module>
 		<module>notifications</module>
 		<module>configserver</module>
+		<module>gateway</module>
 	</modules>
 
 	<url/>

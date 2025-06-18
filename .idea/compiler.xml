@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="gateway" />
         <module name="configserver" />
       </profile>
       <profile name="Annotation profile for bankapp-multimodule" enabled="true">
@@ -14,12 +15,13 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="blocker" />
         <module name="transfer" />
         <module name="exchange" />
-        <module name="front" />
         <module name="accounts" />
+        <module name="front" />
         <module name="cash" />
         <module name="exchange-generator" />
         <module name="notifications" />
@@ -41,6 +43,7 @@
       <module name="exchange (1)" options="-parameters" />
       <module name="exchange-generator" options="-parameters" />
       <module name="front" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="notifications" options="-parameters" />
       <module name="transfer" options="-parameters" />
     </option>
