@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(value = "cash", url = "${feign.cash}")
+@FeignClient(value = "gateway", contextId = "cash")
 public interface CashFeignClient {
 
-    @PostMapping("/api/cash/{login}")
+    @PostMapping("/cash/api/cash/{login}")
     ResponseDto processCash(@PathVariable("login") String login, @RequestBody CashDto cashDto);
 }

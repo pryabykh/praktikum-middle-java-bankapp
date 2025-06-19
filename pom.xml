@@ -26,6 +26,7 @@
 		<module>notifications</module>
 		<module>configserver</module>
 		<module>gateway</module>
+		<module>eurekaserver</module>
 	</modules>
 
 	<url/>

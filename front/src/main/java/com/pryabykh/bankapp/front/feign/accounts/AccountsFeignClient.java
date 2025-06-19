@@ -11,26 +11,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(value = "accounts", url = "${feign.accounts}")
+@FeignClient(value = "gateway", contextId = "accounts")
 public interface AccountsFeignClient {
 
-    @PostMapping("/api/users")
+    @PostMapping("/accounts/api/users")
     ResponseDto createUser(@RequestBody CreateUserDto createUserDto);
 
-    @PostMapping("/api/users/auth")
+    @PostMapping("/accounts/api/users/auth")
     boolean authUser(@RequestParam("login") String login, @RequestParam("password") String password);
 
-    @GetMapping("/api/users/{login}")
+    @GetMapping("/accounts/api/users/{login}")
     UserDto fetchUserByLogin(@PathVariable("login") String login);
 
-    @PutMapping("/api/users/{login}/updatePassword")
+    @PutMapping("/accounts/api/users/{login}/updatePassword")
     ResponseDto updatePassword(@PathVariable String login,
                                @RequestBody UpdatePasswordDto updatePasswordDto);
 
-    @PutMapping("/api/users/{login}/editUserAccounts")
+    @PutMapping("/accounts/api/users/{login}/editUserAccounts")
     ResponseDto editUserAccounts(@PathVariable String login,
                                  @RequestBody AccountSettingsDto accountSettingsDto);
 
-    @GetMapping("/api/users/allUsers/{login}")
+    @GetMapping("/accounts/api/users/allUsers/{login}")
     List<AllUsersDto> fetchAllUsers(@PathVariable("login") String login);
 }

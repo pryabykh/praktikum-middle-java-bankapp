@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(value = "notifications", url = "${feign.notifications}")
+@FeignClient(value = "gateway", contextId = "notifications")
 public interface NotificationsFeignClient {
 
-    @GetMapping("/api/notifications/{login}")
+    @GetMapping("/notifications/api/notifications/{login}")
     List<String> fetchAll(@PathVariable("login") String login);
 }

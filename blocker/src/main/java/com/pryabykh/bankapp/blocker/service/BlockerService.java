@@ -6,7 +6,7 @@ import java.util.Random;
 
 @Service
 public class BlockerService {
-    private static final int CHANCE_OF_BLOCKING_OPERATION_PERCENT = 33;
+    private static final int CHANCE_OF_BLOCKING_OPERATION_PERCENT = 15;
 
     public boolean isSuspicious() {
         Random random = new Random();
