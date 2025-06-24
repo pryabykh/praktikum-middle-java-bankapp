@@ -8,3 +8,5 @@ spring:
   cloud:
     config:
       label: main
+circuit-breaker:
+  timeout-seconds: 5
