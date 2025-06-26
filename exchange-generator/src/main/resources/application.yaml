@@ -2,7 +2,7 @@ spring:
   application:
     name: exchange-generator
   config:
-    import: configserver:http://localhost:8088
+    import: optional:configserver:http://localhost:8088
   profiles:
     active: default
   cloud:

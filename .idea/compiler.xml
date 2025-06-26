@@ -20,8 +20,8 @@
         <module name="blocker" />
         <module name="transfer" />
         <module name="exchange" />
-        <module name="front" />
         <module name="accounts" />
+        <module name="front" />
         <module name="cash" />
         <module name="exchange-generator" />
         <module name="notifications" />

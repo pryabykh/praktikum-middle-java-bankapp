@@ -5,7 +5,6 @@ import com.pryabykh.bankapp.front.feign.accounts.AccountSettingsDto;
 import com.pryabykh.bankapp.front.feign.accounts.UpdatePasswordDto;
 import com.pryabykh.bankapp.front.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/")
-@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 

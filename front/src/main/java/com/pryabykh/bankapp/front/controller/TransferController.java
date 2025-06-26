@@ -3,7 +3,6 @@ package com.pryabykh.bankapp.front.controller;
 import com.pryabykh.bankapp.front.feign.accounts.ResponseDto;
 import com.pryabykh.bankapp.front.feign.transfer.TransferDto;
 import com.pryabykh.bankapp.front.feign.transfer.TransferFeignClient;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/")
-@RequiredArgsConstructor
 public class TransferController {
     private final TransferFeignClient transferFeignClient;
 

@@ -1,10 +1,8 @@
 package com.pryabykh.bankapp.exchange;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class ExchangeApplicationTests {
+class ExchangeApplicationTests extends SpringBootPostgreSQLTestContainerBaseTest {
 
 	@Test
 	void contextLoads() {

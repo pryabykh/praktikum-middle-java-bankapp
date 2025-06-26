@@ -1,10 +1,8 @@
 package com.pryabykh.bankapp.notifications;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class NotificationApplicationTests {
+class NotificationApplicationTests extends SpringBootPostgreSQLTestContainerBaseTest {
 
 	@Test
 	void contextLoads() {
