@@ -1,0 +1,230 @@
+version: '3.8'
+
+services:
+
+  configserver-app-pr:
+    image: 'configserver-app-pr:latest'
+    build:
+      context: ./configserver
+    container_name: configserver-app-pr
+    restart: on-failure:10
+    ports:
+      - "8088:8088"
+
+  eurekaserver-app-pr:
+    image: 'eurekaserver-app-pr:latest'
+    build:
+      context: ./eurekaserver
+    container_name: eurekaserver-app-pr
+    restart: on-failure:10
+    depends_on:
+      - configserver-app-pr
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver-app-pr:8088
+
+  gateway-app-pr:
+    image: 'gateway-app-pr:latest'
+    build:
+      context: ./gateway
+    container_name: gateway-app-pr
+    restart: on-failure:10
+    depends_on:
+      - configserver-app-pr
+      - eurekaserver-app-pr
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver-app-pr:8088
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver-app-pr:8761/eureka/
+
+  front-app-pr:
+    image: 'front-app-pr:latest'
+    build:
+      context: ./front
+    container_name: front-app-pr
+    restart: on-failure:10
+    depends_on:
+      - keycloak-pr
+      - configserver-app-pr
+      - eurekaserver-app-pr
+      - gateway-app-pr
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver-app-pr:8761/eureka/
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver-app-pr:8088
+
+  accounts-app-pr:
+    image: 'accounts-app-pr:latest'
+    build:
+      context: ./accounts
+    container_name: accounts-app-pr
+    restart: on-failure:10
+    depends_on:
+      - db-bankapp-pr
+      - keycloak-pr
+      - configserver-app-pr
+      - eurekaserver-app-pr
+      - gateway-app-pr
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-bankapp-pr:5432/bankapp
+      - SPRING_DATASOURCE_USERNAME=someUser
+      - SPRING_DATASOURCE_PASSWORD=d1ff1cultPasSw0rD
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver-app-pr:8761/eureka/
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver-app-pr:8088
+
+  blocker-app-pr:
+    image: 'blocker-app-pr:latest'
+    build:
+      context: ./blocker
+    container_name: blocker-app-pr
+    restart: on-failure:10
+    depends_on:
+      - keycloak-pr
+      - configserver-app-pr
+      - eurekaserver-app-pr
+      - gateway-app-pr
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver-app-pr:8761/eureka/
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver-app-pr:8088
+
+  cash-app-pr:
+    image: 'cash-app-pr:latest'
+    build:
+      context: ./cash
+    container_name: cash-app-pr
+    restart: on-failure:10
+    depends_on:
+      - keycloak-pr
+      - configserver-app-pr
+      - eurekaserver-app-pr
+      - gateway-app-pr
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver-app-pr:8761/eureka/
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver-app-pr:8088
+
+  exchange-app-pr:
+    image: 'exchange-app-pr:latest'
+    build:
+      context: ./exchange
+    container_name: exchange-app-pr
+    restart: on-failure:10
+    depends_on:
+      - db-bankapp-pr
+      - keycloak-pr
+      - configserver-app-pr
+      - eurekaserver-app-pr
+      - gateway-app-pr
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-bankapp-pr:5432/bankapp
+      - SPRING_DATASOURCE_USERNAME=someUser
+      - SPRING_DATASOURCE_PASSWORD=d1ff1cultPasSw0rD
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver-app-pr:8761/eureka/
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver-app-pr:8088
+
+  exchange-generator-app-pr:
+    image: 'exchange-generator-app-pr:latest'
+    build:
+      context: ./exchange-generator
+    container_name: exchange-generator-app-pr
+    restart: on-failure:10
+    depends_on:
+      - keycloak-pr
+      - configserver-app-pr
+      - eurekaserver-app-pr
+      - gateway-app-pr
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver-app-pr:8761/eureka/
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver-app-pr:8088
+
+  notifications-app-pr:
+    image: 'notifications-app-pr:latest'
+    build:
+      context: ./notifications
+    container_name: notifications-app-pr
+    restart: on-failure:10
+    depends_on:
+      - db-bankapp-pr
+      - keycloak-pr
+      - configserver-app-pr
+      - eurekaserver-app-pr
+      - gateway-app-pr
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-bankapp-pr:5432/bankapp
+      - SPRING_DATASOURCE_USERNAME=someUser
+      - SPRING_DATASOURCE_PASSWORD=d1ff1cultPasSw0rD
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver-app-pr:8761/eureka/
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver-app-pr:8088
+
+  transfer-app-pr:
+    image: 'transfer-app-pr:latest'
+    build:
+      context: ./transfer
+    container_name: transfer-app-pr
+    restart: on-failure:10
+    depends_on:
+      - keycloak-pr
+      - configserver-app-pr
+      - eurekaserver-app-pr
+      - gateway-app-pr
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak-pr:8080/realms/bankapp
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver-app-pr:8761/eureka/
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver-app-pr:8088
+
+  keycloak-pr:
+    image: quay.io/keycloak/keycloak:26.1.3
+    container_name: keycloak-pr
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+    ports:
+      - "9090:8080"
+    volumes:
+      - ./realm-config:/opt/keycloak/data/import
+    command: start-dev --import-realm
+  db-bankapp-pr:
+    image: 'postgres:16-alpine'
+    container_name: db-bankapp-pr
+    environment:
+      POSTGRES_USER: someUser
+      POSTGRES_PASSWORD: d1ff1cultPasSw0rD
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
