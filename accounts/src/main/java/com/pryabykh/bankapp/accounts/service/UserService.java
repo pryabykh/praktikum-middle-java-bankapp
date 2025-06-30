@@ -31,12 +31,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final NotificationsOutboxService notificationsOutboxService;
     private final ExchangeFeignClient exchangeFeignClient;
+    private final ValidationService validationService;
 
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, NotificationsOutboxService notificationsOutboxService, ExchangeFeignClient exchangeFeignClient) {
+    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, NotificationsOutboxService notificationsOutboxService, ExchangeFeignClient exchangeFeignClient, ValidationService validationService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.notificationsOutboxService = notificationsOutboxService;
         this.exchangeFeignClient = exchangeFeignClient;
+        this.validationService = validationService;
     }
 
     @Transactional
@@ -208,47 +210,20 @@ public class UserService {
 
     @Transactional
     public ResponseDto processCash(String login, CashDto cashDto) {
-        ResponseDto response = new ResponseDto();
-
-        if (cashDto.getCurrency() == null || cashDto.getCurrency().isBlank()) {
-            response.getErrors().add("Валюта должна быть заполнена");
-        }
-        if (null == cashDto.getValue()) {
-            response.getErrors().add("Количество денег не может быть пустым");
-        } else if (cashDto.getValue() <= 0) {
-            response.getErrors().add("Некорректно количество денег");
-        }
-        if (null == cashDto.getAction() || cashDto.getAction().isBlank()) {
-            response.getErrors().add("Действие с деньгами не может быть пустым");
-        } else if (!List.of("GET", "PUT").contains(cashDto.getAction())) {
-            response.getErrors().add("Некорректное действие со счетом");
-        }
-
         User user = userRepository.findByLogin(login).orElseThrow(() -> new IllegalArgumentException());
-        List<Account> userAccounts = user.getAccounts();
+        ResponseDto response = new ResponseDto();
+        List<String> errors = validationService.validate(cashDto, user);
 
-        if (userAccounts.stream().noneMatch(a -> a.getCurrency().equals(cashDto.getCurrency()))) {
-            response.getErrors().add("Счет с валютой " + cashDto.getCurrency() + " не найден");
-        }
-
-        if (!response.getErrors().isEmpty()) {
+        if (!errors.isEmpty()) {
+            response.getErrors().addAll(errors);
             response.setHasErrors(true);
             return response;
         }
 
-        Account accountToModify = userAccounts.stream()
+        Account accountToModify = user.getAccounts().stream()
                 .filter(a -> a.getCurrency().equals(cashDto.getCurrency()))
                 .findFirst()
                 .orElseThrow();
-
-        if ("GET".equals(cashDto.getAction()) && (accountToModify.getBalance() - (cashDto.getValue() * 100)) < 0) {
-            response.getErrors().add("Недостаточно средств");
-        }
-
-        if (!response.getErrors().isEmpty()) {
-            response.setHasErrors(true);
-            return response;
-        }
 
         if ("GET".equals(cashDto.getAction())) {
             notificationsOutboxService.createNotification(login, "Снятие наличных: " + cashDto.getValue() + " " + cashDto.getCurrency());
@@ -264,58 +239,23 @@ public class UserService {
 
     @Transactional
     public ResponseDto processTransfer(String login, TransferDto transferDto) {
-        ResponseDto response = new ResponseDto();
-
-        if (transferDto.getFromCurrency() == null || transferDto.getFromCurrency().isBlank()) {
-            response.getErrors().add("Валюта Со счета должна быть заполнена");
-        }
-        if (transferDto.getToCurrency() == null || transferDto.getToCurrency().isBlank()) {
-            response.getErrors().add("Валюта На счет должна быть заполнена");
-        }
-        if (transferDto.getToLogin() == null || transferDto.getToLogin().isBlank()) {
-            response.getErrors().add("Получатель должен быть заполнен");
-        }
-        if (null == transferDto.getValue()) {
-            response.getErrors().add("Количество денег не может быть пустым");
-        } else if (transferDto.getValue() <= 0) {
-            response.getErrors().add("Некорректно количество денег");
-        }
-        if (login.equals(transferDto.getToLogin()) && transferDto.getFromCurrency().equals(transferDto.getToCurrency())) {
-            response.getErrors().add("Перевести можно только между разными счетами");
-        }
-
         User user = userRepository.findByLogin(login).orElseThrow(() -> new IllegalArgumentException());
         List<Account> userAccounts = user.getAccounts();
-
-        if (userAccounts.stream().noneMatch(a -> a.getCurrency().equals(transferDto.getFromCurrency()))) {
-            response.getErrors().add("У вас не открыт счет с валютой " + transferDto.getFromCurrency() + " не найден");
-        }
-
         User toUser = userRepository.findByLogin(transferDto.getToLogin()).orElseThrow(() -> new IllegalArgumentException());
         List<Account> toUserAccounts = toUser.getAccounts();
+        ResponseDto response = new ResponseDto();
 
-        if (toUserAccounts.stream().noneMatch(a -> a.getCurrency().equals(transferDto.getToCurrency()))) {
-            response.getErrors().add("У пользователя " + toUser.getName() + " нет счета в выбранной валюте");
-        }
+        List<String> errors = validationService.validate(transferDto, user, toUser);
 
-        if (!response.getErrors().isEmpty()) {
+        if (!errors.isEmpty()) {
+            response.getErrors().addAll(errors);
             response.setHasErrors(true);
             return response;
         }
-
         Account accountFrom = userAccounts.stream()
                 .filter(a -> a.getCurrency().equals(transferDto.getFromCurrency()))
                 .findFirst()
                 .orElseThrow();
-
-        if ((accountFrom.getBalance() - (transferDto.getValue() * 100)) < 0) {
-            response.getErrors().add("Недостаточно средств");
-        }
-
-        if (!response.getErrors().isEmpty()) {
-            response.setHasErrors(true);
-            return response;
-        }
 
         Account accountTo = toUserAccounts.stream()
                 .filter(a -> a.getCurrency().equals(transferDto.getToCurrency()))
