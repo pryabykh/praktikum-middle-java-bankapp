@@ -1,9 +1,8 @@
 server:
   port: 8080
-eureka:
-  client:
-    register-with-eureka: false
 spring:
+  application:
+    name: front
   security:
     oauth2:
       client:

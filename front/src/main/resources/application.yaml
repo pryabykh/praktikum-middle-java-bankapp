@@ -1,10 +1,25 @@
+server:
+  port: 8080
 spring:
   application:
     name: front
-  config:
-    import: optional:configserver:http://localhost:8088
-  profiles:
-    active: default
-  cloud:
-    config:
-      label: main
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:9090/realms/bankapp
+        registration:
+          bankapp:
+            provider: keycloak
+            authorizationGrantType: client_credentials
+            client-id: bankapp
+            client-secret: UB2e3I2LfwQZyIuWHkmtJ01v0BajybBW
+            scope: profile
+            clientAuthenticationMethod: client_secret_post # Способ передачи секрета
+feign:
+  accounts: http://localhost:8089/accounts
+  exchange: http://localhost:8089/exchange
+  cash: http://localhost:8089/cash
+  transfer: http://localhost:8089/transfer
+  notifications: http://localhost:8089/notifications

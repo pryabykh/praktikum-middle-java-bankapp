@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@FeignClient(value = "gateway", contextId = "exchange")
+@FeignClient(value = "exchange", url = "${feign.exchange}")
 public interface ExchangeFeignClient {
 
-    @GetMapping("/exchange/api/rates")
+    @GetMapping("/api/rates")
     List<RateDto> fetchAll();
 }

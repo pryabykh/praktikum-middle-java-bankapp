@@ -1,0 +1,47 @@
+# Global values (if any)
+global:
+  domain: bankapp.local # Example domain for ingress
+
+# Configuration for the customer-service subchart
+# NOTE: For local development (Minikube/Kind/Docker Desktop), build the image locally
+# (e.g., `docker build -t customer-service:0.0.1-SNAPSHOT .` in customer-service dir)
+# and ensure your K8s cluster can access local images (e.g., `minikube docker-env` or `kind load docker-image ...`).
+front-service:
+  replicaCount: 1
+  image:
+    # --- REVERTED TO LOCAL REPO ---
+    repository: front-service # Removed registry prefix
+    tag: "0.0.1-SNAPSHOT"
+    pullPolicy: IfNotPresent # Use IfNotPresent for local images
+    # -----------------------------
+  service:
+    type: ClusterIP
+    port: 8080
+  ingress:
+    enabled: true
+    className: "nginx" # Specify your ingress controller class
+    hosts:
+      - host: front-service.bankapp.local # Use global domain or specific
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+
+keycloak-service:
+  replicaCount: 1
+  image:
+    # --- REVERTED TO LOCAL REPO ---
+    repository: keycloak # Removed registry prefix
+    tag: "pr"
+    pullPolicy: IfNotPresent # Use IfNotPresent for local images
+    # -----------------------------
+  service:
+    type: ClusterIP
+    port: 8080
+  ingress:
+    enabled: true
+    className: "nginx" # Specify your ingress controller class
+    hosts:
+      - host: keycloak-service.bankapp.local # Use global domain or specific
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
