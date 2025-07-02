@@ -1,6 +1,6 @@
-server:
-  port: 8084
 spring:
+  application:
+    name: cash
   security:
     oauth2:
       resourceserver:
@@ -18,8 +18,8 @@ spring:
             client-secret: UB2e3I2LfwQZyIuWHkmtJ01v0BajybBW
             scope: profile
             clientAuthenticationMethod: client_secret_post # Способ передачи секрета
-  application:
-    name: cash
-eureka:
-  client:
-    register-with-eureka: false
+server:
+  port: 8080
+feign:
+  accounts: http://localhost:8089/accounts
+  blocker: http://localhost:8089/blocker

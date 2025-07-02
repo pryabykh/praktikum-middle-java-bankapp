@@ -73,6 +73,10 @@ docker build -t blocker-service:0.0.1-SNAPSHOT .
 minikube image load blocker-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi blocker-service:0.0.1-SNAPSHOT"
 
+docker build -t cash-service:0.0.1-SNAPSHOT .   
+minikube image load cash-service:0.0.1-SNAPSHOT
+minikube ssh "docker rmi cash-service:0.0.1-SNAPSHOT"
+
 docker build -t keycloak:pr .
 minikube image load keycloak:pr
 minikube ssh "docker rmi keycloak:pr"
