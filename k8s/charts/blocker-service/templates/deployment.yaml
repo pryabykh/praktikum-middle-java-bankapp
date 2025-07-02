@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "front-service.fullname" . }}
+  name: {{ include "blocker-service.fullname" . }}
   labels:
-    {{- include "front-service.labels" . | nindent 4 }}
+    {{- include "blocker-service.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "front-service.selectorLabels" . | nindent 6 }}
+      {{- include "blocker-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "front-service.selectorLabels" . | nindent 8 }}
+        {{- include "blocker-service.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "front-service.serviceAccountName" . }}
+      serviceAccountName: {{ include "blocker-service.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -54,9 +54,11 @@ spec:
           env:
             - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI
               value: "http://myapp-keycloak-service.default.svc.cluster.local:8080/realms/bankapp"
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: "http://myapp-keycloak-service.default.svc.cluster.local:8080/realms/bankapp"
           envFrom:
             - configMapRef:
-                name: {{ include "front-service.fullname" . }}
+                name: {{ include "blocker-service.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

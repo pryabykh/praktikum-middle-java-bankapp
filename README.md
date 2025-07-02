@@ -69,6 +69,10 @@ docker build -t front-service:0.0.1-SNAPSHOT .
 minikube image load front-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi front-service:0.0.1-SNAPSHOT"
 
+docker build -t blocker-service:0.0.1-SNAPSHOT .   
+minikube image load blocker-service:0.0.1-SNAPSHOT
+minikube ssh "docker rmi blocker-service:0.0.1-SNAPSHOT"
+
 docker build -t keycloak:pr .
 minikube image load keycloak:pr
 minikube ssh "docker rmi keycloak:pr"

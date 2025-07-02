@@ -1,5 +1,3 @@
-server:
-  port: 8083
 spring:
   application:
     name: blocker
@@ -20,6 +18,5 @@ spring:
             client-secret: UB2e3I2LfwQZyIuWHkmtJ01v0BajybBW
             scope: profile
             clientAuthenticationMethod: client_secret_post # Способ передачи секрета
-eureka:
-  client:
-    register-with-eureka: false
+server:
+  port: 8080
