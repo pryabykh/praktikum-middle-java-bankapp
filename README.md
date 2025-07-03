@@ -89,6 +89,10 @@ docker build -t accounts-service:0.0.1-SNAPSHOT .
 minikube image load accounts-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi accounts-service:0.0.1-SNAPSHOT"
 
+docker build -t exchange-service:0.0.1-SNAPSHOT .   
+minikube image load exchange-service:0.0.1-SNAPSHOT
+minikube ssh "docker rmi exchange-service:0.0.1-SNAPSHOT"
+
 docker build -t keycloak:pr .
 minikube image load keycloak:pr
 minikube ssh "docker rmi keycloak:pr"

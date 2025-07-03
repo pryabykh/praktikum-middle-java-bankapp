@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8080
 db:
   schema-name: exchange
 spring:
@@ -48,6 +48,3 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.xml
   application:
     name: exchange
-eureka:
-  client:
-    register-with-eureka: false
