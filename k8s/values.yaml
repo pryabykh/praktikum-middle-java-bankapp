@@ -66,6 +66,26 @@ cash-service:
           - path: /
             pathType: ImplementationSpecific
 
+exchange-generator-service:
+  replicaCount: 1
+  image:
+    # --- REVERTED TO LOCAL REPO ---
+    repository: exchange-generator-service # Removed registry prefix
+    tag: "0.0.1-SNAPSHOT"
+    pullPolicy: IfNotPresent # Use IfNotPresent for local images
+    # -----------------------------
+  service:
+    type: ClusterIP
+    port: 8080
+  ingress:
+    enabled: true
+    className: "nginx" # Specify your ingress controller class
+    hosts:
+      - host: exchange-generator-service.bankapp.local # Use global domain or specific
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+
 keycloak-service:
   replicaCount: 1
   image:

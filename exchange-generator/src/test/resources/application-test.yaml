@@ -1,6 +1,8 @@
 server:
-  port: 8086
+  port: 8080
 spring:
+  application:
+    name: exchange-generator
   security:
     oauth2:
       resourceserver:
@@ -18,8 +20,5 @@ spring:
             client-secret: UB2e3I2LfwQZyIuWHkmtJ01v0BajybBW
             scope: profile
             clientAuthenticationMethod: client_secret_post # Способ передачи секрета
-  application:
-    name: exchange-generator
-eureka:
-  client:
-    register-with-eureka: false
+feign:
+  exchange: http://localhost:8089/exchange

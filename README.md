@@ -63,7 +63,7 @@ docker-compose up -d --build
 ## Запуск модулей по отдельности
 Для запуска модулей по отдельности необходимо запустить все приложение по инструкции выше и отключить ненужные модулю в Docker Desktop интерфейсе.
 
-minikube addons enable ingress
+
 
 docker build -t front-service:0.0.1-SNAPSHOT .   
 minikube image load front-service:0.0.1-SNAPSHOT
@@ -77,6 +77,10 @@ docker build -t cash-service:0.0.1-SNAPSHOT .
 minikube image load cash-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi cash-service:0.0.1-SNAPSHOT"
 
+docker build -t exchange-generator-service:0.0.1-SNAPSHOT .   
+minikube image load exchange-generator-service:0.0.1-SNAPSHOT
+minikube ssh "docker rmi exchange-generator-service:0.0.1-SNAPSHOT"
+
 docker build -t keycloak:pr .
 minikube image load keycloak:pr
 minikube ssh "docker rmi keycloak:pr"
@@ -86,6 +90,7 @@ helm uninstall myapp
 helm install myapp ./
 
 minikube start --vm-driver=docker
+minikube addons enable ingress
 
 minikube tunnel
 
