@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 8080
 spring:
   security:
     oauth2:
@@ -20,6 +20,7 @@ spring:
             clientAuthenticationMethod: client_secret_post # Способ передачи секрета
   application:
     name: transfer
-eureka:
-  client:
-    register-with-eureka: false
+feign:
+  accounts: http://localhost:8089/accounts
+  exchange: http://localhost:8089/exchange
+  blocker: http://localhost:8089/blocker

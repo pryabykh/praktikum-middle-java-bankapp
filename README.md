@@ -81,6 +81,10 @@ docker build -t exchange-generator-service:0.0.1-SNAPSHOT .
 minikube image load exchange-generator-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi exchange-generator-service:0.0.1-SNAPSHOT"
 
+docker build -t transfer-service:0.0.1-SNAPSHOT .   
+minikube image load transfer-service:0.0.1-SNAPSHOT
+minikube ssh "docker rmi transfer-service:0.0.1-SNAPSHOT"
+
 docker build -t keycloak:pr .
 minikube image load keycloak:pr
 minikube ssh "docker rmi keycloak:pr"

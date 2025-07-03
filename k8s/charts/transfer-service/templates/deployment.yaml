@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "cash-service.fullname" . }}
+  name: {{ include "transfer-service.fullname" . }}
   labels:
-    {{- include "cash-service.labels" . | nindent 4 }}
+    {{- include "transfer-service.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "cash-service.selectorLabels" . | nindent 6 }}
+      {{- include "transfer-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "cash-service.selectorLabels" . | nindent 8 }}
+        {{- include "transfer-service.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "cash-service.serviceAccountName" . }}
+      serviceAccountName: {{ include "transfer-service.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -58,11 +58,13 @@ spec:
               value: "http://myapp-keycloak-service.default.svc.cluster.local:8080/realms/bankapp"
             - name: FEIGN_ACCOUNTS
               value: "http://myapp-accounts-service.default.svc.cluster.local:8080"
+            - name: FEIGN_EXCHANGE
+              value: "http://myapp-exchange-service.default.svc.cluster.local:8080"
             - name: FEIGN_BLOCKER
               value: "http://myapp-blocker-service.default.svc.cluster.local:8080"
           envFrom:
             - configMapRef:
-                name: {{ include "cash-service.fullname" . }}
+                name: {{ include "transfer-service.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
