@@ -27,6 +27,9 @@ dependencies:
   - name: exchange-service
     version: "0.1.0"
     repository: "file://./charts/exchange-service" # Local path reference
+  - name: notifications-service
+    version: "0.1.0"
+    repository: "file://./charts/notifications-service" # Local path reference
   - name: keycloak-service
     version: "0.1.0"
     repository: "file://./charts/keycloak-service" # Local path reference
