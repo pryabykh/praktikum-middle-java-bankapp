@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "exchange-generator-service.fullname" . }}
+  name: {{ include "accounts-service.fullname" . }}
   labels:
-    {{- include "exchange-generator-service.labels" . | nindent 4 }}
+    {{- include "accounts-service.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "exchange-generator-service.selectorLabels" . | nindent 6 }}
+      {{- include "accounts-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "exchange-generator-service.selectorLabels" . | nindent 8 }}
+        {{- include "accounts-service.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "exchange-generator-service.serviceAccountName" . }}
+      serviceAccountName: {{ include "accounts-service.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -51,16 +51,23 @@ spec:
             periodSeconds: 60
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "accounts-service.fullname" . }}
           env:
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-app-db
+                  key: password
             - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI
               value: "http://myapp-keycloak-service.default.svc.cluster.local:8080/realms/bankapp"
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
               value: "http://myapp-keycloak-service.default.svc.cluster.local:8080/realms/bankapp"
             - name: FEIGN_EXCHANGE
               value: "http://myapp-exchange-service.default.svc.cluster.local:8080"
-          envFrom:
-            - configMapRef:
-                name: {{ include "exchange-generator-service.fullname" . }}
+            - name: FEIGN_NOTIFICATIONS
+              value: "http://myapp-notifications-service.default.svc.cluster.local:8080"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

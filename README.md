@@ -85,6 +85,10 @@ docker build -t transfer-service:0.0.1-SNAPSHOT .
 minikube image load transfer-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi transfer-service:0.0.1-SNAPSHOT"
 
+docker build -t accounts-service:0.0.1-SNAPSHOT .   
+minikube image load accounts-service:0.0.1-SNAPSHOT
+minikube ssh "docker rmi accounts-service:0.0.1-SNAPSHOT"
+
 docker build -t keycloak:pr .
 minikube image load keycloak:pr
 minikube ssh "docker rmi keycloak:pr"
@@ -94,8 +98,13 @@ helm uninstall myapp
 helm install myapp ./
 
 minikube start --vm-driver=docker
+
+minikube start --vm-driver=docker --cpus=8 --memory=8192
+
 minikube addons enable ingress
 
 minikube tunnel
 
 ipconfig /flushdns
+
+helm dependency update . 

@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 db:
   schema-name: accounts
 spring:
@@ -48,6 +48,6 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.xml
   application:
     name: accounts
-eureka:
-  client:
-    register-with-eureka: false
+feign:
+  exchange: http://localhost:8089/exchange
+  notifications: http://localhost:8089/notifications

@@ -106,6 +106,32 @@ transfer-service:
           - path: /
             pathType: ImplementationSpecific
 
+accounts-service:
+  replicaCount: 1
+  image:
+    # --- REVERTED TO LOCAL REPO ---
+    repository: accounts-service # Removed registry prefix
+    tag: "0.0.1-SNAPSHOT"
+    pullPolicy: IfNotPresent # Use IfNotPresent for local images
+    # -----------------------------
+  service:
+    type: ClusterIP
+    port: 8080 # Different port for order service
+  ingress:
+    enabled: true
+    className: "nginx"
+    hosts:
+      - host: accounts-service.bankapp.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+  config:
+    # --- CORRECTED DB URL --- Using '<ReleaseName>-<Alias>' service name convention
+    database_url: "jdbc:postgresql://{{ .Release.Name }}-app-db:5432/appdb"
+    database_username: "appdb"
+    # database_password_secret: "{{ .Release.Name }}-order-db-postgresql"
+    # database_password_secret_key: "postgresql-password"
+
 keycloak-service:
   replicaCount: 1
   image:
@@ -125,3 +151,17 @@ keycloak-service:
         paths:
           - path: /
             pathType: ImplementationSpecific
+
+app-db:
+  enabled: true
+  # Override values from the official postgresql chart
+  auth:
+    database: appdb
+    username: appdb
+    # Use existingSecret or provide password (less secure for production)
+    # existingSecret: "{{ .Release.Name }}-customer-db-postgresql" # Name of the secret to use/create
+    password: "changeM3Customer!" # Example: Not recommended for production
+  primary:
+    persistence:
+      enabled: true
+      size: 1Gi # Small size for example

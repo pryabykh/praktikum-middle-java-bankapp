@@ -9,6 +9,25 @@ dependencies:
   - name: front-service
     version: "0.1.0"
     repository: "file://./charts/front-service" # Local path reference
+  - name: blocker-service
+    version: "0.1.0"
+    repository: "file://./charts/blocker-service" # Local path reference
+  - name: cash-service
+    version: "0.1.0"
+    repository: "file://./charts/cash-service" # Local path reference
+  - name: exchange-generator-service
+    version: "0.1.0"
+    repository: "file://./charts/exchange-generator-service" # Local path reference
+  - name: transfer-service
+    version: "0.1.0"
+    repository: "file://./charts/transfer-service" # Local path reference
+  - name: accounts-service
+    version: "0.1.0"
+    repository: "file://./charts/accounts-service" # Local path reference
   - name: keycloak-service
     version: "0.1.0"
     repository: "file://./charts/keycloak-service" # Local path reference
+  - name: postgresql
+    version: "14.2.3" # Using a specific known stable version from Bitnami history
+    repository: "https://charts.bitnami.com/bitnami"
+    alias: app-db # Alias to distinguish this instance
