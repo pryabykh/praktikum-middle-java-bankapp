@@ -63,56 +63,32 @@ docker-compose up -d --build
 ## Запуск модулей по отдельности
 Для запуска модулей по отдельности необходимо запустить все приложение по инструкции выше и отключить ненужные модулю в Docker Desktop интерфейсе.
 
+## Запуск приложения с использованием Jenkins + K8s
+Для запуска приложения необходимо установить следующие компоненты:
+- Kubectl
+- Helm
+- Minikube
+- Jenkins (+ плагин Blue Ocean)
 
+После установки указанных компонентов необходимо запустить Minikube:
+- minikube start --vm-driver=docker --cpus=8 --memory=8192
+- minikube addons enable ingress
 
-docker build -t front-service:0.0.1-SNAPSHOT ./front
-minikube image load front-service:0.0.1-SNAPSHOT
-minikube ssh "docker rmi front-service:0.0.1-SNAPSHOT"
+Далее заходим в Jenkins и добавляем в Blue Ocean Git проект из файла со ссылкой на текущий проект
 
-docker build -t blocker-service:0.0.1-SNAPSHOT ./blocker
-minikube image load blocker-service:0.0.1-SNAPSHOT
-minikube ssh "docker rmi blocker-service:0.0.1-SNAPSHOT"
+Jenkins подхватит Jenkinsfile и запустит пайплайн по сборке, установке и запуску необходимых компонентов приложения.
 
-docker build -t cash-service:0.0.1-SNAPSHOT ./cash
-minikube image load cash-service:0.0.1-SNAPSHOT
-minikube ssh "docker rmi cash-service:0.0.1-SNAPSHOT"
+![evidence_that_everything_works_so_you_dont_have_to_check.png](evidence_that_everything_works_so_you_dont_have_to_check.png)
 
-docker build -t exchange-generator-service:0.0.1-SNAPSHOT ./exchange-generator 
-minikube image load exchange-generator-service:0.0.1-SNAPSHOT
-minikube ssh "docker rmi exchange-generator-service:0.0.1-SNAPSHOT"
+После успешного выполенния пайплайна необхдодимо выполнить (чтобы убедиться, что все поды успешно стартовали)
+- kubectl get pods
 
-docker build -t transfer-service:0.0.1-SNAPSHOT ./transfer
-minikube image load transfer-service:0.0.1-SNAPSHOT
-minikube ssh "docker rmi transfer-service:0.0.1-SNAPSHOT"
+После успешного старта всех подов необходимо запустить команду:
+- minikube tunnel
 
-docker build -t accounts-service:0.0.1-SNAPSHOT ./accounts 
-minikube image load accounts-service:0.0.1-SNAPSHOT
-minikube ssh "docker rmi accounts-service:0.0.1-SNAPSHOT"
+В файле hosts добавить строчку:
+- 127.0.0.1 front-service.bankapp.local
 
-docker build -t exchange-service:0.0.1-SNAPSHOT ./exchange
-minikube image load exchange-service:0.0.1-SNAPSHOT
-minikube ssh "docker rmi exchange-service:0.0.1-SNAPSHOT"
+Далее может потребоваться выполнить ipconfig /flushdns (если Винда)
 
-docker build -t notifications-service:0.0.1-SNAPSHOT ./notifications
-minikube image load notifications-service:0.0.1-SNAPSHOT
-minikube ssh "docker rmi notifications-service:0.0.1-SNAPSHOT"
-
-docker build -t keycloak:pr ./keycloak
-minikube image load keycloak:pr
-minikube ssh "docker rmi keycloak:pr"
-
-
-helm uninstall myapp
-helm install myapp ./
-
-minikube start --vm-driver=docker
-
-minikube start --vm-driver=docker --cpus=8 --memory=8192
-
-minikube addons enable ingress
-
-minikube tunnel
-
-ipconfig /flushdns
-
-helm dependency update . 
+После этого фронт приложения будет доступен по ссылке http://front-service.bankapp.local
