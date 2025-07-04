@@ -16,15 +16,24 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="blocker" />
         <module name="transfer" />
         <module name="exchange" />
         <module name="front" />
-        <module name="accounts" />
         <module name="cash" />
         <module name="exchange-generator" />
         <module name="notifications" />
+      </profile>
+      <profile name="Annotation profile for accounts" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+        </processorPath>
+        <module name="accounts" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -65,39 +65,39 @@ docker-compose up -d --build
 
 
 
-docker build -t front-service:0.0.1-SNAPSHOT .   
+docker build -t front-service:0.0.1-SNAPSHOT ./front
 minikube image load front-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi front-service:0.0.1-SNAPSHOT"
 
-docker build -t blocker-service:0.0.1-SNAPSHOT .   
+docker build -t blocker-service:0.0.1-SNAPSHOT ./blocker
 minikube image load blocker-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi blocker-service:0.0.1-SNAPSHOT"
 
-docker build -t cash-service:0.0.1-SNAPSHOT .   
+docker build -t cash-service:0.0.1-SNAPSHOT ./cash
 minikube image load cash-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi cash-service:0.0.1-SNAPSHOT"
 
-docker build -t exchange-generator-service:0.0.1-SNAPSHOT .   
+docker build -t exchange-generator-service:0.0.1-SNAPSHOT ./exchange-generator 
 minikube image load exchange-generator-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi exchange-generator-service:0.0.1-SNAPSHOT"
 
-docker build -t transfer-service:0.0.1-SNAPSHOT .   
+docker build -t transfer-service:0.0.1-SNAPSHOT ./transfer
 minikube image load transfer-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi transfer-service:0.0.1-SNAPSHOT"
 
-docker build -t accounts-service:0.0.1-SNAPSHOT .   
+docker build -t accounts-service:0.0.1-SNAPSHOT ./accounts 
 minikube image load accounts-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi accounts-service:0.0.1-SNAPSHOT"
 
-docker build -t exchange-service:0.0.1-SNAPSHOT .   
+docker build -t exchange-service:0.0.1-SNAPSHOT ./exchange
 minikube image load exchange-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi exchange-service:0.0.1-SNAPSHOT"
 
-docker build -t notifications-service:0.0.1-SNAPSHOT .   
+docker build -t notifications-service:0.0.1-SNAPSHOT ./notifications
 minikube image load notifications-service:0.0.1-SNAPSHOT
 minikube ssh "docker rmi notifications-service:0.0.1-SNAPSHOT"
 
-docker build -t keycloak:pr .
+docker build -t keycloak:pr ./keycloak
 minikube image load keycloak:pr
 minikube ssh "docker rmi keycloak:pr"
 
