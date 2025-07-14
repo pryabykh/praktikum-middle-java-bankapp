@@ -51,3 +51,7 @@ spring:
 feign:
   exchange: http://localhost:8089/exchange
   notifications: http://localhost:8089/notifications
+
+kafka:
+  bootstrap:
+    servers: localhost:9092

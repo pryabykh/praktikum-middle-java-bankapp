@@ -15,11 +15,11 @@ public class NotificationsOutboxService {
 
     private static final Logger log = LoggerFactory.getLogger(NotificationsOutboxService.class);
     private final NotificationsOutboxRepository notificationsOutboxRepository;
-    private final NotificationsFeignClient notificationsFeignClient;
+    private final NotificationKafkaService notificationKafkaService;
 
-    public NotificationsOutboxService(NotificationsOutboxRepository notificationsOutboxRepository, NotificationsFeignClient notificationsFeignClient) {
+    public NotificationsOutboxService(NotificationsOutboxRepository notificationsOutboxRepository, NotificationKafkaService notificationKafkaService) {
         this.notificationsOutboxRepository = notificationsOutboxRepository;
-        this.notificationsFeignClient = notificationsFeignClient;
+        this.notificationKafkaService = notificationKafkaService;
     }
 
 
@@ -40,7 +40,7 @@ public class NotificationsOutboxService {
                 dto.setSourceId(notification.getId());
                 dto.setLogin(notification.getLogin());
                 dto.setMessage(notification.getMessage());
-                notificationsFeignClient.create(dto);
+                notificationKafkaService.create(dto);
                 notification.setReceived(true);
                 notificationsOutboxRepository.save(notification);
             });
