@@ -21,12 +21,14 @@ public class KafkaConfiguration {
     @Value("${kafka.bootstrap.servers}")
     private String bootstrapServers;
 
+    //for topic creation
     @Bean
     public AdminClient adminClient() {
         Map<String, Object> configs = Collections.singletonMap("bootstrap.servers", bootstrapServers);
         return AdminClient.create(configs);
     }
 
+    //for topic creation
     @Bean
     NewTopic orders() {
         return new NewTopic(
@@ -36,6 +38,7 @@ public class KafkaConfiguration {
         );
     }
 
+    //for producer
     @Bean
     public ProducerFactory<String, String> producerFactory() {
         Map<String, Object> props = new HashMap<>();
@@ -57,6 +60,7 @@ public class KafkaConfiguration {
         return new DefaultKafkaProducerFactory<>(props);
     }
 
+    //for producer
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
