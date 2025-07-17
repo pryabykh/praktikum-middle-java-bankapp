@@ -9,10 +9,10 @@ import java.util.Random;
 
 @Service
 public class UpdateRandomCurrencyService {
-    private final ExchangeFeignClient exchangeFeignClient;
+    private final ExchangeGeneratorKafkaService exchangeGeneratorKafkaService;
 
-    public UpdateRandomCurrencyService(ExchangeFeignClient exchangeFeignClient) {
-        this.exchangeFeignClient = exchangeFeignClient;
+    public UpdateRandomCurrencyService(ExchangeGeneratorKafkaService exchangeGeneratorKafkaService) {
+        this.exchangeGeneratorKafkaService = exchangeGeneratorKafkaService;
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -20,6 +20,6 @@ public class UpdateRandomCurrencyService {
         UpdateRandomCurrencyDto updateRandomCurrencyDto = new UpdateRandomCurrencyDto();
         Random random = new Random();
         updateRandomCurrencyDto.setValue(random.nextInt(99) + 1);
-        exchangeFeignClient.updateRandomCurrency(updateRandomCurrencyDto);
+        exchangeGeneratorKafkaService.updateRandomCurrency(updateRandomCurrencyDto);
     }
 }

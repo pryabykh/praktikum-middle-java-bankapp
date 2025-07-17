@@ -48,3 +48,6 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.xml
   application:
     name: exchange
+kafka:
+  bootstrap:
+    servers: localhost:9092

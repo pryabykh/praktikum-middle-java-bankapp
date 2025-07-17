@@ -25,9 +25,4 @@ public class RateController {
     public List<RateDto> fetchAll() {
         return rateService.fetchAll();
     }
-
-    @PostMapping("/update-random-currency")
-    public void updateRandomCurrency(@RequestBody UpdateRandomCurrencyDto randomCurrencyDto) {
-        rateService.updateRandomCurrency(randomCurrencyDto);
-    }
 }

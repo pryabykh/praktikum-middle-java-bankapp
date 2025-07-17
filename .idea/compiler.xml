@@ -23,8 +23,8 @@
         <module name="front" />
         <module name="accounts" />
         <module name="cash" />
-        <module name="exchange-generator" />
         <module name="notifications" />
+        <module name="exchange-generator" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

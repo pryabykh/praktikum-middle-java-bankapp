@@ -22,3 +22,6 @@ spring:
             clientAuthenticationMethod: client_secret_post # Способ передачи секрета
 feign:
   exchange: http://localhost:8084
+kafka:
+  bootstrap:
+    servers: localhost:9092
