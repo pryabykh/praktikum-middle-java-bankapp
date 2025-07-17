@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8087
 spring:
   security:
     oauth2:
@@ -21,6 +21,6 @@ spring:
   application:
     name: transfer
 feign:
-  accounts: http://localhost:8089/accounts
-  exchange: http://localhost:8089/exchange
-  blocker: http://localhost:8089/blocker
+  accounts: http://localhost:8081
+  exchange: http://localhost:8084
+  blocker: http://localhost:8082

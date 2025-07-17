@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 db:
   schema-name: accounts
 spring:
@@ -49,8 +49,8 @@ spring:
   application:
     name: accounts
 feign:
-  exchange: http://localhost:8089/exchange
-  notifications: http://localhost:8089/notifications
+  exchange: http://localhost:8084
+  notifications: http://localhost:8086
 
 kafka:
   bootstrap:

@@ -64,6 +64,12 @@ spec:
               value: "http://myapp-transfer-service.default.svc.cluster.local:8080"
             - name: FEIGN_NOTIFICATIONS
               value: "http://myapp-notifications-service.default.svc.cluster.local:8080"
+            - name: SERVER_PORT
+              value: "8080"
+            - name: FRONTEND_RATES_URL
+              value: "http://front-service.bankapp.local/api/rates"
+            - name: FRONTEND_NOTIFICATIONS_URL
+              value: "http://front-service.bankapp.local/api/notifications"
           envFrom:
             - configMapRef:
                 name: {{ include "front-service.fullname" . }}

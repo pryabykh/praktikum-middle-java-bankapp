@@ -3,10 +3,11 @@
 
 <head>
     <title>Корзина товаров</title>
-    <script language="JavaScript">
+    <script th:inline="javascript">
+        var ratesUrl = '[(${@environment.getProperty('frontend.rates.url')})]';
         setInterval(() => {
             var td = document.getElementById('exchange_rates');
-            fetch('http://front-service.bankapp.local/api/rates')
+            fetch(ratesUrl)
                 .then(response => response.json())
                 .then(json => {
                     var table = '<table style="width:100%;margin-left:auto;margin-right:auto;border-radius:2%;padding:10px;background-color:whitesmoke;">';
@@ -26,7 +27,8 @@
         }, 1000);
         setInterval(() => {
             var td = document.getElementById('notifications');
-            fetch('http://front-service.bankapp.local/api/notifications')
+            var notificationUrl = '[(${@environment.getProperty('frontend.notifications.url')})]';
+            fetch(notificationUrl)
                 .then(response => response.json())
                 .then(json => {
                     var table = '<table style="width:100%;margin-left:auto;margin-right:auto;border-radius:2%;padding:10px;background-color:whitesmoke;">';

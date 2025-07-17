@@ -68,6 +68,8 @@ spec:
               value: "http://myapp-exchange-service.default.svc.cluster.local:8080"
             - name: FEIGN_NOTIFICATIONS
               value: "http://myapp-notifications-service.default.svc.cluster.local:8080"
+            - name: SERVER_PORT
+              value: "8080"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

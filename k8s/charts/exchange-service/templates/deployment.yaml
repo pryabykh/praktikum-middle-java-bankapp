@@ -64,6 +64,8 @@ spec:
               value: "http://myapp-keycloak-service.default.svc.cluster.local:8080/realms/bankapp"
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
               value: "http://myapp-keycloak-service.default.svc.cluster.local:8080/realms/bankapp"
+            - name: SERVER_PORT
+              value: "8080"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
