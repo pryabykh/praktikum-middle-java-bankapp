@@ -18,7 +18,7 @@ public class NotificationKafkaService {
         this.notificationsKafkaTemplate = notificationsKafkaTemplate;
     }
 
-    void create(NotificationCreateDto createDto) {
+    public void create(NotificationCreateDto createDto) {
         try {
             notificationsKafkaTemplate.send(
                     "notifications",
