@@ -1,4 +1,4 @@
-# praktikum-middle-java-bankapp-v2
+# praktikum-middle-java-bankapp-v3
 
 ## Java
 Приложение запускается на версии Java 21
