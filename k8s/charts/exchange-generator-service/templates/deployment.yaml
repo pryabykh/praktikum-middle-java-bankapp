@@ -60,6 +60,8 @@ spec:
               value: "http://myapp-exchange-service.default.svc.cluster.local:8080"
             - name: SERVER_PORT
               value: "8080"
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "app-kafka:9092"
           envFrom:
             - configMapRef:
                 name: {{ include "exchange-generator-service.fullname" . }}

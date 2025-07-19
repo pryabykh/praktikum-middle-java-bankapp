@@ -37,3 +37,7 @@ dependencies:
     version: "14.2.3" # Using a specific known stable version from Bitnami history
     repository: "https://charts.bitnami.com/bitnami"
     alias: app-db # Alias to distinguish this instance
+  - name: kafka
+    version: "19.3.3"  # Use a known stable version from Bitnami (check their version history)
+    repository: "https://charts.bitnami.com/bitnami"
+    alias: app-kafka
