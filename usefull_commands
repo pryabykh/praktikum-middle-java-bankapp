@@ -49,3 +49,7 @@ minikube tunnel
 ipconfig /flushdns
 
 helm dependency update .
+
+
+Zipkin
+docker run --name zipkin --rm -p 9411:9411 openzipkin/zipkin:3.5

@@ -28,12 +28,12 @@ class ExchangeApplicationTests extends SpringBootPostgreSQLTestContainerBaseTest
 	private RateService rateService;
 
 	@Test
-	@Order(1)
+	@Order(2)
 	void contextLoads() {
 	}
 
 	@Test
-	@Order(2)
+	@Order(1)
 	void kafkaTest() throws JsonProcessingException, ExecutionException, InterruptedException {
 		UpdateRandomCurrencyDto dto = new UpdateRandomCurrencyDto();
 		dto.setValue(1);
