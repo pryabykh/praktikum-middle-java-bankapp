@@ -27,6 +27,10 @@ kafka:
     servers: localhost:9092
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
   zipkin:
     tracing:
       endpoint:  http://127.0.0.1:9411/api/v2/spans
